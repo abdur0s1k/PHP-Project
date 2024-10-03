@@ -1,30 +1,21 @@
 <?php
+function row(array $line ) {
+  if( count(array_unique($line)) == 1 && $line[0] != 0 ) {
+    return $line[0];
+  }
+  return false;
+}
 function is_solved(array $board): int {
-
-    for ($i = 0; $i < 3; $i++) {
-        
-        if ($board[$i][0] === $board[$i][1] && $board[$i][1] === $board[$i][2] && $board[$i][0] !== 0) {
-            return $board[$i][0];
-        }
-    
-        if ($board[0][$i] === $board[1][$i] && $board[1][$i] === $board[2][$i] && $board[0][$i] !== 0) {
-            return $board[0][$i];
-        }
-    }
-
-    if ($board[0][0] === $board[1][1] && $board[1][1] === $board[2][2] && $board[0][0] !== 0) {
-        return $board[0][0];
-    }
-    if ($board[0][2] === $board[1][1] && $board[1][1] === $board[2][0] && $board[0][2] !== 0) {
-        return $board[0][2];
-    }
   
-    foreach ($board as $row) {
-        if (in_array(0, $row)) {
-            return -1;
-        }
-    }
-
-    return 0;
-} 
-?>
+  if( $r = row( $board[0] ) ) return $r;
+  if( $r = row( $board[1] ) ) return $r;
+  if( $r = row( $board[2] ) ) return $r;
+  if( $r = row( [$board[0][0],$board[1][0],$board[2][0]] ) ) return $r;
+  if( $r = row( [$board[0][1],$board[1][1],$board[2][1]] ) ) return $r;
+  if( $r = row( [$board[0][2],$board[1][2],$board[2][2]] ) ) return $r;
+  if( $r = row( [$board[0][0],$board[1][1],$board[2][2]] ) ) return $r;
+  if( $r = row( [$board[2][0],$board[1][1],$board[0][2]] ) ) return $r;
+  if( !in_array( 0, array_merge( $board[0], $board[1], $board[2] ) )) return 0;
+  
+  return -1;
+}
